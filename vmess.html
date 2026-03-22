@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VMESS V2RAY — SSHFREE LTM</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--neon:#00ffe7;--neon2:#ff003c;--neon3:#ffe600;--neon4:#00ff88;--bg:#050810;--bg2:#0a0f1e;--bg3:#0f1628;--border:rgba(0,255,231,0.15);--text:#c8d8e8;--dim:#556677}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,231,0.012) 2px,rgba(0,255,231,0.012) 4px);pointer-events:none;z-index:9999}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,231,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,231,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(5,8,16,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px var(--neon);letter-spacing:4px}
+.nav-logo span{color:var(--neon2)}
+.nav-back{font-family:'Share Tech Mono',monospace;font-size:0.68rem;padding:8px 16px;background:transparent;border:1px solid var(--border);color:var(--dim);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-radius:4px}
+.nav-back:hover{border-color:var(--neon);color:var(--neon)}
+.main{position:relative;z-index:1;padding:80px 20px 40px;max-width:500px;margin:0 auto}
+.credits-bar{background:var(--bg3);border:1px solid var(--border);padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:14px;border-radius:6px}
+.cr-dots{display:flex;gap:6px}
+.cr-dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--neon);transition:all 0.3s}
+.cr-dot.active{background:var(--neon);box-shadow:0 0 10px var(--neon)}
+.cr-dot.empty{border-color:var(--dim)}
+.cr-info{flex:1}
+.cr-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.cr-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--neon)}
+.cr-next{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);margin-top:1px}
+.form-title{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--neon3);letter-spacing:3px;margin-bottom:4px}
+.form-subtitle{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:22px}
+.server-info{background:var(--bg3);border:1px solid rgba(255,230,0,0.2);padding:16px;border-radius:6px;margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.online{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--neon4)}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--neon4);box-shadow:0 0 6px var(--neon4);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.field{margin-bottom:16px}
+.field label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:7px}
+.field input{width:100%;background:var(--bg3);border:1px solid var(--border);color:#fff;font-family:'Share Tech Mono',monospace;font-size:0.95rem;padding:13px 15px;outline:none;transition:border-color 0.2s;border-radius:6px}
+.field input:focus{border-color:var(--neon3);box-shadow:0 0 15px rgba(255,230,0,0.1)}
+.field input::placeholder{color:var(--dim)}
+.btn-create{width:100%;padding:16px;background:var(--neon3);color:var(--bg);border:none;font-family:'Orbitron',monospace;font-size:0.88rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;box-shadow:0 0 25px rgba(255,230,0,0.3);border-radius:6px;margin-top:6px}
+.btn-create:hover{box-shadow:0 0 45px rgba(255,230,0,0.6)}
+.btn-create:disabled{background:var(--dim);cursor:not-allowed;box-shadow:none}
+.error-box{display:none;background:rgba(255,0,60,0.08);border:1px solid rgba(255,0,60,0.3);padding:12px 15px;margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:#ff6680;border-radius:6px}
+.error-box.show{display:block}
+.loading-box{display:none;text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:var(--neon3)}
+.loading-box.show{display:block}
+.result-panel{display:none}
+.result-panel.show{display:block}
+.result-header{background:rgba(255,230,0,0.06);border:1px solid rgba(255,230,0,0.3);padding:18px;text-align:center;margin-bottom:14px;border-radius:6px}
+.result-ok{font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:900;color:var(--neon3);letter-spacing:2px}
+.cred-box{background:var(--bg3);border:1px solid var(--border);margin-bottom:10px;border-radius:6px;overflow:hidden}
+.cred-header{background:var(--bg);padding:9px 15px;font-family:'Share Tech Mono',monospace;font-size:0.63rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.copy-btn{background:transparent;border:1px solid rgba(255,230,0,0.3);color:var(--neon3);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.63rem;padding:4px 10px;transition:all 0.2s;border-radius:3px}
+.copy-btn.copied{color:#00ff88;border-color:rgba(0,255,136,0.3)}
+.cred-row{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid var(--border);gap:10px}
+.cred-row:last-child{border-bottom:none}
+.cred-key{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--dim);min-width:65px}
+.cred-val{font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:var(--neon3);word-break:break-all;text-align:right}
+.vmess-link{padding:12px 16px;font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--neon);word-break:break-all}
+.btn-new{width:100%;padding:13px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Orbitron',monospace;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border-radius:6px;margin-top:6px}
+.btn-new:hover{border-color:var(--neon3);color:var(--neon3)}
+.creator-badge{text-align:center;border-top:1px solid var(--border);padding-top:18px;margin-top:22px}
+.creator-badge-text{font-family:'Orbitron',monospace;font-size:0.58rem;font-weight:900;letter-spacing:4px;color:var(--dim);text-transform:uppercase}
+.creator-badge-text strong{color:var(--neon3)}
+.creator-badge-text span{color:var(--neon)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--neon3)}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo">SSH<span>FREE</span></div>
+  <a href="/" class="nav-back">← Inicio</a>
+</nav>
+<div class="main">
+  <div class="credits-bar">
+    <div class="cr-dots" id="crDots">
+      <div class="cr-dot active"></div>
+      <div class="cr-dot active"></div>
+      <div class="cr-dot active"></div>
+    </div>
+    <div class="cr-info">
+      <div class="cr-label">Creditos disponibles</div>
+      <div class="cr-count" id="crCount">3 / 3</div>
+      <div class="cr-next" id="crNext">+1 cada 10h</div>
+    </div>
+  </div>
+  <div id="formPanel">
+    <div class="form-title">CREAR VMESS V2RAY</div>
+    <div class="form-subtitle">// Miami • TLS 443 • WebSocket • 3 dias</div>
+    <div class="server-info">
+      <img src="https://flagcdn.com/w40/us.png" style="width:28px;height:20px;object-fit:cover;border-radius:2px;flex-shrink:0;">
+      <div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:700;color:#fff;">Miami (Juegos)</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);">mia.darkfullhn.xyz • Puerto 443 • WS+TLS</div>
+      </div>
+      <div class="online"><span class="online-dot"></span>Online</div>
+    </div>
+    <div class="field">
+      <label>Nombre del perfil</label>
+      <input type="text" id="vmessName" placeholder="ejemplo: miperfil" maxlength="20">
+    </div>
+    <div class="error-box" id="errorBox"></div>
+    <div class="loading-box" id="loadingBox">Creando VMess, espera...</div>
+    <button class="btn-create" id="btnCreate">CREAR VMESS</button>
+  </div>
+  <div class="result-panel" id="resultPanel">
+    <div class="result-header">
+      <div class="result-ok">VMESS CREADO</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);margin-top:5px;">Miami • TLS 443 • WebSocket</div>
+    </div>
+    <div class="cred-box">
+      <div class="cred-header">Link VMess <button class="copy-btn" id="copyBtn">Copiar</button></div>
+      <div class="vmess-link" id="vmessLink"></div>
+    </div>
+    <div class="cred-box">
+      <div class="cred-header">Detalles de conexion</div>
+      <div class="cred-row"><span class="cred-key">HOST</span><span class="cred-val">mia.darkfullhn.xyz</span></div>
+      <div class="cred-row"><span class="cred-key">PUERTO</span><span class="cred-val">443</span></div>
+      <div class="cred-row"><span class="cred-key">TLS</span><span class="cred-val">ON</span></div>
+      <div class="cred-row"><span class="cred-key">RED</span><span class="cred-val">WebSocket</span></div>
+      <div class="cred-row"><span class="cred-key">PATH</span><span class="cred-val">/v2ray</span></div>
+      <div class="cred-row"><span class="cred-key">EXPIRA</span><span class="cred-val" id="resExp"></span></div>
+    </div>
+    <button class="btn-new" id="btnNew">Crear otro VMess</button>
+  </div>
+  <div class="creator-badge">
+    <div class="creator-badge-text"><span>SSHFREE</span> by <strong>DarkZFull</strong> 2026</div>
+  </div>
+</div>
+<script>
+function loadCredits(){
+  fetch('/api/status').then(function(r){return r.json();}).then(function(d){
+    document.getElementById('crCount').textContent=d.credits+' / '+d.max_credits;
+    var dots=document.getElementById('crDots');dots.innerHTML='';
+    for(var i=0;i<d.max_credits;i++){
+      var dot=document.createElement('div');
+      dot.className='cr-dot '+(i<d.credits?'active':'empty');
+      dots.appendChild(dot);
+    }
+    document.getElementById('crNext').textContent=d.credits>0?'+1 cada '+d.regen_hours+'h':'Proximo en: '+d.next_credit;
+  }).catch(function(){});
+}
+document.getElementById('btnCreate').addEventListener('click',function(){
+  var name=document.getElementById('vmessName').value.trim();
+  var err=document.getElementById('errorBox');
+  var btn=document.getElementById('btnCreate');
+  var load=document.getElementById('loadingBox');
+  err.classList.remove('show');
+  if(!name||name.length<3){err.textContent='Nombre minimo 3 caracteres';err.classList.add('show');return;}
+  if(!/^[a-zA-Z0-9]+$/.test(name)){err.textContent='Solo letras y numeros';err.classList.add('show');return;}
+  btn.disabled=true;btn.textContent='Creando...';load.classList.add('show');
+  fetch('/api/vmess/create',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:name})
+  }).then(function(r){return r.json();}).then(function(d){
+    btn.disabled=false;btn.textContent='CREAR VMESS';load.classList.remove('show');
+    if(!d.ok){err.textContent=d.error||'Error';err.classList.add('show');return;}
+    document.getElementById('formPanel').style.display='none';
+    document.getElementById('resultPanel').classList.add('show');
+    document.getElementById('vmessLink').textContent=d.vmess;
+    document.getElementById('resExp').textContent=d.expiration+' (3 dias)';
+    document.getElementById('copyBtn').onclick=function(){copyText(d.vmess,this);};
+    loadCredits();
+  }).catch(function(e){
+    btn.disabled=false;btn.textContent='CREAR VMESS';load.classList.remove('show');
+    err.textContent='Error: '+e.message;err.classList.add('show');
+  });
+});
+document.getElementById('btnNew').addEventListener('click',function(){
+  document.getElementById('formPanel').style.display='block';
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('vmessName').value='';
+  document.getElementById('errorBox').classList.remove('show');
+});
+function copyText(text,btn){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      var orig=btn.textContent;btn.textContent='OK';btn.classList.add('copied');
+      setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+    });
+  }else{
+    var ta=document.createElement('textarea');ta.value=text;
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    var orig=btn.textContent;btn.textContent='OK';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+  }
+}
+loadCredits();
+setInterval(loadCredits,30000);
+</script>
+</body>
+</html>

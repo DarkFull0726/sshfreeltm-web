@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — SSHFREE</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--neon:#00ffe7;--neon2:#ff003c;--neon3:#ffe600;--bg:#050810;--bg2:#0a0f1e;--bg3:#0f1628;--border:rgba(0,255,231,0.15);--text:#c8d8e8;--dim:#556677}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,231,0.012) 2px,rgba(0,255,231,0.012) 4px);pointer-events:none;z-index:9999}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,231,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,231,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* LOGIN */
+.login-wrap{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:var(--bg2);border:1px solid var(--border);padding:40px 32px;width:100%;max-width:380px;border-radius:8px}
+.login-title{font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px var(--neon);letter-spacing:3px;text-align:center;margin-bottom:6px}
+.login-sub{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;text-align:center;margin-bottom:32px}
+.login-field{margin-bottom:20px}
+.login-field label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:8px}
+.login-field input{width:100%;background:var(--bg3);border:1px solid var(--border);color:#fff;font-family:'Share Tech Mono',monospace;font-size:1rem;padding:14px 16px;outline:none;border-radius:6px;transition:border-color 0.2s}
+.login-field input:focus{border-color:var(--neon)}
+.login-field input::placeholder{color:var(--dim)}
+.login-btn{width:100%;padding:15px;background:var(--neon);color:var(--bg);border:none;font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:6px;box-shadow:0 0 25px rgba(0,255,231,0.3);transition:all 0.2s}
+.login-btn:hover{box-shadow:0 0 45px rgba(0,255,231,0.6)}
+.login-error{display:none;background:rgba(255,0,60,0.08);border:1px solid rgba(255,0,60,0.3);padding:12px;margin-bottom:16px;font-family:'Share Tech Mono',monospace;font-size:0.78rem;color:#ff6680;border-radius:6px;text-align:center}
+.login-error.show{display:block}
+
+/* PANEL */
+.panel{display:none;position:relative;z-index:1}
+.panel.show{display:block}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:rgba(5,8,16,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--neon);letter-spacing:3px}
+.nav-logo span{color:var(--neon2)}
+.nav-badge{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--neon3);text-transform:uppercase}
+.nav-logout{font-family:'Share Tech Mono',monospace;font-size:0.68rem;padding:6px 14px;background:transparent;border:1px solid rgba(255,0,60,0.4);color:#ff6680;cursor:pointer;border-radius:4px;transition:all 0.2s}
+.nav-logout:hover{background:rgba(255,0,60,0.1)}
+
+/* CONTENT */
+.content{padding:80px 20px 40px;max-width:800px;margin:0 auto}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
+@media(min-width:500px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:var(--bg2);border:1px solid var(--border);padding:16px;border-radius:6px;text-align:center}
+.stat-num{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--neon);text-shadow:0 0 15px var(--neon);display:block}
+.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:4px;display:block}
+
+/* VPS STATS */
+.vps-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:24px}
+.vps-stat{background:var(--bg2);border:1px solid var(--border);padding:12px 16px;border-radius:6px;display:flex;align-items:center;justify-content:space-between}
+.vps-stat-name{font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:700;color:var(--text)}
+.vps-stat-count{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--neon)}
+
+/* TABS */
+.tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.tab{flex:1;padding:12px 8px;background:var(--bg2);border:none;color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border-right:1px solid var(--border)}
+.tab:last-child{border-right:none}
+.tab.active{background:rgba(0,255,231,0.1);color:var(--neon)}
+
+/* SECTIONS */
+.section{display:none}
+.section.show{display:block}
+.section-title{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:900;color:#fff;letter-spacing:3px;margin-bottom:16px}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-family:'Share Tech Mono',monospace;font-size:0.72rem}
+th{background:var(--bg3);padding:10px 12px;text-align:left;color:var(--dim);letter-spacing:2px;text-transform:uppercase;font-weight:400;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid rgba(0,255,231,0.05);color:var(--text);word-break:break-all}
+tr:hover td{background:rgba(0,255,231,0.02)}
+.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:0.65rem;letter-spacing:1px}
+.badge-ok{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:#00ff88}
+.badge-no{background:rgba(255,0,60,0.1);border:1px solid rgba(255,0,60,0.3);color:#ff6680}
+.badge-vps{background:rgba(0,255,231,0.08);border:1px solid rgba(0,255,231,0.2);color:var(--neon)}
+.del-btn{background:transparent;border:1px solid rgba(255,0,60,0.3);color:#ff6680;cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.62rem;padding:3px 8px;border-radius:3px;transition:all 0.2s}
+.del-btn:hover{background:rgba(255,0,60,0.1)}
+
+/* GENKEY FORM */
+.genkey-form{background:var(--bg2);border:1px solid var(--border);padding:20px;border-radius:6px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.genkey-field{flex:1;min-width:120px}
+.genkey-field label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:8px}
+.genkey-field input{width:100%;background:var(--bg3);border:1px solid var(--border);color:#fff;font-family:'Share Tech Mono',monospace;font-size:0.9rem;padding:12px 14px;outline:none;border-radius:4px;transition:border-color 0.2s}
+.genkey-field input:focus{border-color:var(--neon)}
+.genkey-btn{padding:12px 20px;background:var(--neon);color:var(--bg);border:none;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:900;letter-spacing:2px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:all 0.2s}
+.genkey-btn:hover{box-shadow:0 0 20px rgba(0,255,231,0.4)}
+.genkey-result{display:none;background:rgba(0,255,231,0.05);border:1px solid rgba(0,255,231,0.2);padding:14px 16px;border-radius:6px;margin-bottom:16px;font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:var(--neon);word-break:break-all}
+.genkey-result.show{display:block}
+
+/* REFRESH */
+.refresh-btn{background:transparent;border:1px solid var(--border);color:var(--dim);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.65rem;padding:6px 14px;border-radius:4px;transition:all 0.2s;margin-bottom:16px}
+.refresh-btn:hover{border-color:var(--neon);color:var(--neon)}
+
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--neon)}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-title">⚙️ ADMIN</div>
+    <div class="login-sub">// Panel de Administración SSHFREE</div>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-field">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">ENTRAR</button>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div class="panel" id="adminPanel">
+  <nav>
+    <div class="nav-logo">SSH<span>FREE</span> <span class="nav-badge">ADMIN</span></div>
+    <button class="nav-logout" onclick="doLogout()">Cerrar sesión</button>
+  </nav>
+
+  <div class="content">
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><span class="stat-num" id="sUsers">-</span><span class="stat-lbl">Usuarios SSH</span></div>
+      <div class="stat-card"><span class="stat-num" id="sBanned">-</span><span class="stat-lbl">Baneados</span></div>
+      <div class="stat-card"><span class="stat-num" id="sCoupons">-</span><span class="stat-lbl">Cupones</span></div>
+      <div class="stat-card"><span class="stat-num" id="sSessions">-</span><span class="stat-lbl">Sesiones Web</span></div>
+    </div>
+
+    <!-- VPS stats -->
+    <div class="vps-stats" id="vpsStats"></div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('users',this)">Usuarios SSH</button>
+      <button class="tab" onclick="showTab('coupons',this)">Cupones</button>
+      <button class="tab" onclick="showTab('banned',this)">Baneados</button>
+    </div>
+
+    <!-- Usuarios SSH -->
+    <div class="section show" id="tabUsers">
+      <button class="refresh-btn" onclick="loadStats()">↻ Actualizar</button>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Usuario</th><th>VPS</th><th>Creado por</th><th>Expira</th><th></th></tr></thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Cupones -->
+    <div class="section" id="tabCoupons">
+      <div class="genkey-form">
+        <div class="genkey-field">
+          <label>Creditos del cupón</label>
+          <input type="number" id="keyCredits" value="3" min="1" max="99">
+        </div>
+        <button class="genkey-btn" onclick="genKey()">🎟️ GENERAR</button>
+      </div>
+      <div class="genkey-result" id="genkeyResult"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Código</th><th>Créditos</th><th>Estado</th><th>Canjeado por</th></tr></thead>
+          <tbody id="couponsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Baneados -->
+    <div class="section" id="tabBanned">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Motivo</th><th>Fecha</th></tr></thead>
+          <tbody id="bannedTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var token = localStorage.getItem('admin_token') || null;
+
+// Auto-login si hay token guardado
+if(token) { showPanel(); loadStats(); }
+
+function doLogin() {
+  var pass = document.getElementById('loginPass').value;
+  var err  = document.getElementById('loginError');
+  err.classList.remove('show');
+  fetch('/api/admin/login', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: pass})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(d.ok){
+      token = d.token;
+      localStorage.setItem('admin_token', token);
+      showPanel();
+      loadStats();
+    } else {
+      err.textContent = d.error || 'Error';
+      err.classList.add('show');
+    }
+  }).catch(function(){
+    err.textContent = 'Error de conexion';
+    err.classList.add('show');
+  });
+}
+
+function doLogout() {
+  token = null;
+  localStorage.removeItem('admin_token');
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('adminPanel').classList.remove('show');
+  document.getElementById('loginPass').value = '';
+}
+
+function showPanel() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('adminPanel').classList.add('show');
+}
+
+function loadStats() {
+  fetch('/api/admin/stats', {headers:{'X-Token': token}})
+  .then(function(r){
+    if(r.status===401){ doLogout(); return null; }
+    return r.json();
+  }).then(function(d){
+    if(!d) return;
+    document.getElementById('sUsers').textContent    = d.total_users;
+    document.getElementById('sBanned').textContent   = d.total_banned;
+    document.getElementById('sCoupons').textContent  = d.total_coupons;
+    document.getElementById('sSessions').textContent = d.total_sessions;
+
+    // VPS stats
+    var vpsDiv = document.getElementById('vpsStats');
+    vpsDiv.innerHTML = '';
+    var vpsNames = {brazil:'🇧🇷 Brazil', mexico:'🇲🇽 Mexico', chile:'🇨🇱 Chile', dallas:'🇺🇸 Dallas'};
+    Object.keys(vpsNames).forEach(function(k){
+      var div = document.createElement('div');
+      div.className = 'vps-stat';
+      div.innerHTML = '<span class="vps-stat-name">'+vpsNames[k]+'</span><span class="vps-stat-count">'+(d.by_vps[k]||0)+'</span>';
+      vpsDiv.appendChild(div);
+    });
+
+    // Users table
+    var tb = document.getElementById('usersTable');
+    tb.innerHTML = '';
+    if(!d.users || d.users.length===0){
+      tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--dim);padding:20px">Sin usuarios activos</td></tr>';
+    } else {
+      d.users.forEach(function(u){
+        var exp = u.expiration ? u.expiration.substring(0,10) : '-';
+        var creator = (u.creator_id||'').replace('web:','');
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>'+u.username+'</td><td><span class="badge badge-vps">'+(u.vps||'-').toUpperCase()+'</span></td><td>'+creator+'</td><td>'+exp+'</td><td><button class="del-btn" onclick="deleteUser(\''+u.username+'\', this)">Eliminar</button></td>';
+        tb.appendChild(tr);
+      });
+    }
+
+    // Coupons table
+    var ct = document.getElementById('couponsTable');
+    ct.innerHTML = '';
+    if(!d.coupons || d.coupons.length===0){
+      ct.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--dim);padding:20px">Sin cupones</td></tr>';
+    } else {
+      d.coupons.forEach(function(c){
+        var tr = document.createElement('tr');
+        var estado = c.used ? '<span class="badge badge-no">Usado</span>' : '<span class="badge badge-ok">Disponible</span>';
+        tr.innerHTML = '<td>'+c.code+'</td><td>'+c.credits+'</td><td>'+estado+'</td><td>'+(c.used_by||'-')+'</td>';
+        ct.appendChild(tr);
+      });
+    }
+
+    // Banned table
+    var bt = document.getElementById('bannedTable');
+    bt.innerHTML = '';
+    if(!d.banned || d.banned.length===0){
+      bt.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--dim);padding:20px">Sin usuarios baneados</td></tr>';
+    } else {
+      d.banned.forEach(function(b){
+        var fecha = b.banned_at ? b.banned_at.substring(0,10) : '-';
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>'+b.id+'</td><td>'+b.reason+'</td><td>'+fecha+'</td>';
+        bt.appendChild(tr);
+      });
+    }
+  }).catch(function(){});
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('show'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('tab'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('show');
+  btn.classList.add('active');
+}
+
+function deleteUser(username, btn) {
+  if(!confirm('Eliminar usuario ' + username + '?')) return;
+  btn.textContent = '...'; btn.disabled = true;
+  fetch('/api/admin/delete_user', {
+    method:'POST', headers:{'Content-Type':'application/json','X-Token':token},
+    body: JSON.stringify({username: username})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(d.ok){ loadStats(); }
+    else { alert(d.error); btn.textContent='Eliminar'; btn.disabled=false; }
+  }).catch(function(){ btn.textContent='Eliminar'; btn.disabled=false; });
+}
+
+function genKey() {
+  var credits = parseInt(document.getElementById('keyCredits').value) || 1;
+  var result  = document.getElementById('genkeyResult');
+  fetch('/api/admin/genkey', {
+    method:'POST', headers:{'Content-Type':'application/json','X-Token':token},
+    body: JSON.stringify({credits: credits})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(d.ok){
+      result.textContent = '✅ Cupón generado: ' + d.code + ' (' + d.credits + ' créditos)';
+      result.classList.add('show');
+      loadStats();
+    }
+  }).catch(function(){});
+}
+</script>
+</body>
+</html>

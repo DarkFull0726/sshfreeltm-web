@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSHFREE — by DarkZFull</title>
+<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260315_115532_464.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--neon:#00ffe7;--neon2:#ff003c;--neon3:#ffe600;--bg:#050810;--bg2:#0a0f1e;--bg3:#0f1628;--border:rgba(0,255,231,0.15);--text:#c8d8e8;--dim:#556677}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,231,0.012) 2px,rgba(0,255,231,0.012) 4px);pointer-events:none;z-index:9999}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,231,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,231,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(5,8,16,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px var(--neon);letter-spacing:4px}
+.nav-logo span{color:var(--neon2)}
+.nav-menu-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+.nav-menu-btn span{display:block;width:24px;height:2px;background:var(--neon);transition:all 0.3s;box-shadow:0 0 6px var(--neon)}
+.nav-menu-btn.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.nav-menu-btn.open span:nth-child(2){opacity:0}
+.nav-menu-btn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.sidebar{position:fixed;top:0;right:-280px;width:280px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:300;transition:right 0.3s ease;overflow-y:auto}
+.sidebar.open{right:0}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:250;display:none}
+.sidebar-overlay.show{display:block}
+.sidebar-profile{padding:40px 24px 24px;text-align:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,255,231,0.05),transparent)}
+.profile-avatar{width:90px;height:90px;border-radius:50%;border:3px solid var(--neon);box-shadow:0 0 25px rgba(0,255,231,0.4);margin:0 auto 14px;overflow:hidden;display:block}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-name{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#fff;margin-bottom:4px}
+.profile-handle{font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:var(--neon);letter-spacing:2px}
+.profile-badge{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:2px;padding:4px 12px;border:1px solid rgba(0,255,231,0.3);color:var(--dim);text-transform:uppercase;margin-top:8px;border-radius:20px}
+.sidebar-links{padding:16px 0}
+.sidebar-link{display:flex;align-items:center;gap:14px;padding:14px 24px;color:var(--text);text-decoration:none;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:600;letter-spacing:1px;transition:all 0.2s;border-left:3px solid transparent}
+.sidebar-link:hover{background:rgba(0,255,231,0.05);border-left-color:var(--neon);color:var(--neon)}
+.sidebar-link .icon{font-size:1.2rem;width:24px;text-align:center}
+.sidebar-divider{height:1px;background:var(--border);margin:8px 24px}
+.sidebar-about{padding:20px 24px;border-top:1px solid var(--border)}
+.about-title{font-family:'Orbitron',monospace;font-size:0.7rem;font-weight:900;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:12px}
+.about-text{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--dim);line-height:1.7}
+.about-text strong{color:var(--neon3)}
+.sidebar-footer{padding:16px 24px;border-top:1px solid var(--border);text-align:center}
+.sidebar-footer-text{font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+.sidebar-footer-text strong{color:var(--neon)}
+.main{position:relative;z-index:1;padding:74px 20px 40px;max-width:500px;margin:0 auto}
+.credits-bar{background:var(--bg3);border:1px solid var(--border);padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:14px;border-radius:6px}
+.cr-dots{display:flex;gap:6px}
+.cr-dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--neon);transition:all 0.3s}
+.cr-dot.active{background:var(--neon);box-shadow:0 0 10px var(--neon)}
+.cr-dot.empty{border-color:var(--dim)}
+.cr-info{flex:1}
+.cr-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.cr-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--neon)}
+.cr-next{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);margin-top:1px}
+.form-title{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:3px;margin-bottom:4px}
+.form-subtitle{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:22px}
+.vps-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}
+.vps-btn{padding:12px 10px;background:var(--bg3);border:2px solid var(--border);color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;text-align:left;display:flex;align-items:center;gap:8px;width:100%;border-radius:6px}
+.vps-btn:hover,.vps-btn:active{border-color:var(--neon);color:var(--neon);background:rgba(0,255,231,0.05)}
+.vps-btn.selected{border-color:var(--neon);background:rgba(0,255,231,0.1);color:var(--neon);box-shadow:0 0 15px rgba(0,255,231,0.2)}
+.vps-info{display:flex;flex-direction:column;gap:1px}
+.vps-name{font-size:0.88rem;font-weight:700;line-height:1}
+.vps-domain{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim)}
+.vps-btn.selected .vps-domain{color:rgba(0,255,231,0.6)}
+.field{margin-bottom:16px}
+.field label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:7px}
+.field input{width:100%;background:var(--bg3);border:1px solid var(--border);color:#fff;font-family:'Share Tech Mono',monospace;font-size:0.95rem;padding:13px 15px;outline:none;transition:border-color 0.2s;border-radius:6px}
+.field input:focus{border-color:var(--neon);box-shadow:0 0 15px rgba(0,255,231,0.15)}
+.field input::placeholder{color:var(--dim)}
+.field-prefix{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color 0.2s}
+.field-prefix:focus-within{border-color:var(--neon)}
+.prefix-text{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--neon);padding:13px 10px;border-right:1px solid var(--border);white-space:nowrap;background:rgba(0,255,231,0.05)}
+.field-prefix input{border:none;background:transparent;flex:1;padding:13px 10px;font-family:'Share Tech Mono',monospace;font-size:0.9rem;color:#fff;outline:none}
+.btn-create{width:100%;padding:16px;background:var(--neon);color:var(--bg);border:none;font-family:'Orbitron',monospace;font-size:0.88rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;box-shadow:0 0 25px rgba(0,255,231,0.3);border-radius:6px;margin-top:6px}
+.btn-create:hover,.btn-create:active{box-shadow:0 0 45px rgba(0,255,231,0.6)}
+.btn-create:disabled{background:var(--dim);cursor:not-allowed;box-shadow:none}
+.error-box{display:none;background:rgba(255,0,60,0.08);border:1px solid rgba(255,0,60,0.3);padding:12px 15px;margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:#ff6680;border-radius:6px}
+.error-box.show{display:block}
+.loading-box{display:none;text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:var(--neon)}
+.loading-box.show{display:block}
+.result-panel{display:none}
+.result-panel.show{display:block}
+.result-header{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);padding:18px;text-align:center;margin-bottom:14px;border-radius:6px}
+.result-ok{font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:900;color:#00ff88;letter-spacing:2px}
+.result-vps{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);margin-top:5px}
+.cred-box{background:var(--bg3);border:1px solid var(--border);margin-bottom:10px;border-radius:6px;overflow:hidden}
+.cred-header{background:var(--bg);padding:9px 15px;font-family:'Share Tech Mono',monospace;font-size:0.63rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.copy-btn{background:transparent;border:1px solid rgba(0,255,231,0.2);color:var(--neon);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.63rem;padding:4px 10px;transition:all 0.2s;border-radius:3px}
+.copy-btn.copied{color:#00ff88;border-color:rgba(0,255,136,0.3)}
+.cred-row{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid var(--border);gap:10px}
+.cred-row:last-child{border-bottom:none}
+.cred-key{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--dim);min-width:65px}
+.cred-val{font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:var(--neon);word-break:break-all;text-align:right}
+.cred-val.white{color:#fff}
+.conn-item{background:var(--bg3);border:1px solid var(--border);padding:10px 13px;margin-bottom:7px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.conn-label{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;min-width:65px}
+.conn-value{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--neon);word-break:break-all;flex:1}
+.btn-new{width:100%;padding:13px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Orbitron',monospace;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border-radius:6px;margin-top:6px}
+.btn-new:hover{border-color:var(--neon);color:var(--neon)}
+.ports-box{background:var(--bg3);border:1px solid var(--border);padding:12px 16px;margin-bottom:10px;border-radius:6px;font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);line-height:2;word-break:break-all}
+.creator-badge{text-align:center;border-top:1px solid var(--border);padding-top:18px;margin-top:22px}
+.creator-badge-text{font-family:'Orbitron',monospace;font-size:0.58rem;font-weight:900;letter-spacing:4px;color:var(--dim);text-transform:uppercase}
+.creator-badge-text strong{color:var(--neon3)}
+.creator-badge-text span{color:var(--neon)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--neon)}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<nav>
+  <div class="nav-logo">SSH<span>FREE</span></div>
+  <button class="nav-menu-btn" id="menuBtn" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-profile">
+    <img class="profile-avatar" src="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260314_222310_149.jpg" alt="DarkZFull">
+    <div class="profile-name">DarkZFull</div>
+    <div class="profile-handle">@DarkZFull</div>
+    <div class="profile-badge">Desarrollador • Bot Creator</div>
+  </div>
+  <div class="sidebar-links">
+    <a href="/" class="sidebar-link" onclick="closeSidebar()"><span class="icon">🏠</span> Inicio</a>
+    <a href="/crear" class="sidebar-link" onclick="closeSidebar()"><span class="icon">⚡</span> Crear SSH</a>
+    <a href="/vmess" class="sidebar-link"><span class="icon">📡</span> Crear VMess</a>
+    <a href="/zivvpn" class="sidebar-link"><span class="icon">🔐</span> ZIV VPN</a>
+    <div class="sidebar-divider"></div>
+    <a href="https://t.me/+AzYZK49QGys4MDVh" target="_blank" class="sidebar-link"><span class="icon">👥</span> Grupo de Soporte</a>
+    <a href="https://t.me/+g8bjM5B2izkyNzYx" target="_blank" class="sidebar-link"><span class="icon">📢</span> Canal Oficial</a>
+    <a href="https://t.me/ltmdkz" target="_blank" class="sidebar-link"><span class="icon">📡</span> Canal LTM</a>
+    <a href="https://t.me/DarkZFull" target="_blank" class="sidebar-link"><span class="icon">💬</span> Contactar Soporte</a>
+  </div>
+  <div class="sidebar-about">
+    <div class="about-title">Acerca de SSHFREE</div>
+    <div class="about-text">Servicio gratuito de cuentas SSH creado por <strong>@DarkZFull</strong>.<br><br>Servidores globales. Sistema de creditos. Sin registro.</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-footer-text"><strong>SSHFREE</strong> by DarkZFull 2026</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="credits-bar">
+    <div class="cr-dots" id="crDots">
+      <div class="cr-dot active"></div>
+      <div class="cr-dot active"></div>
+      <div class="cr-dot active"></div>
+    </div>
+    <div class="cr-info">
+      <div class="cr-label">Creditos disponibles</div>
+      <div class="cr-count" id="crCount">3 / 3</div>
+      <div class="cr-next" id="crNext">+1 cada 10h</div>
+    </div>
+  </div>
+
+  <div id="formPanel">
+    <div class="form-title">CREAR CUENTA SSH</div>
+    <div class="form-subtitle">// Elige servidor y credenciales</div>
+    <div class="vps-grid">
+      <button class="vps-btn" id="btn-mexico" onclick="selectVps('mexico',this)">
+        <span style="font-size:1.6rem">🇲🇽</span>
+        <div class="vps-info">
+          <span class="vps-name">Mexico</span>
+          <span class="vps-domain">mxvlt.darkfullhn.xyz</span>
+        </div>
+      </button>
+      <button class="vps-btn" id="btn-miami" onclick="selectVps('miami',this)">
+        <img src="https://flagcdn.com/w40/us.png" style="width:28px;height:20px;object-fit:cover;border-radius:2px;">
+        <div class="vps-info">
+          <span class="vps-name">Miami (Juegos)</span>
+          <span class="vps-domain">mia.darkfullhn.xyz</span>
+        </div>
+      </button>
+    </div>
+    <div class="field">
+      <label>Usuario SSH</label>
+      <div class="field-prefix">
+        <span class="prefix-text">ltmsshfree-</span>
+        <input type="text" id="inputUser" placeholder="tunombre" maxlength="20">
+      </div>
+    </div>
+    <div class="field">
+      <label>Contrasena</label>
+      <input type="text" id="inputPass" placeholder="minimo 4 caracteres">
+    </div>
+    <div class="error-box" id="errorBox"></div>
+    <div class="loading-box" id="loadingBox">Creando usuario, espera...</div>
+    <button class="btn-create" id="btnCreate">CREAR CUENTA</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="result-header">
+      <div class="result-ok">CUENTA CREADA</div>
+      <div class="result-vps" id="resFlagVps"></div>
+    </div>
+    <div class="cred-box">
+      <div class="cred-header">Credenciales <button class="copy-btn" id="copyAllBtn">Copiar todo</button></div>
+      <div class="cred-row"><span class="cred-key">USUARIO</span><span class="cred-val white" id="resUser"></span></div>
+      <div class="cred-row"><span class="cred-key">PASS</span><span class="cred-val white" id="resPass"></span></div>
+      <div class="cred-row"><span class="cred-key">IP</span><span class="cred-val" id="resIp"></span></div>
+      <div class="cred-row"><span class="cred-key">HOST</span><span class="cred-val" id="resDomain"></span></div>
+      <div class="cred-row"><span class="cred-key">EXPIRA</span><span class="cred-val" id="resExp"></span></div>
+    </div>
+    <div id="connList"></div>
+    <div class="ports-box" id="portsBox" style="display:none"></div>
+    <button class="btn-new" id="btnNew">Crear otra cuenta</button>
+  </div>
+
+  <div class="creator-badge">
+    <div class="creator-badge-text"><span>SSHFREE</span> by <strong>DarkZFull</strong> 2026</div>
+  </div>
+</div>
+
+<script>
+var selectedVps = null;
+var currentResult = null;
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('menuBtn').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('menuBtn').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function selectVps(vps, btn) {
+  document.querySelectorAll('.vps-btn').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  selectedVps = vps;
+}
+
+function loadCredits() {
+  fetch('/api/status').then(function(r) { return r.json(); }).then(function(d) {
+    document.getElementById('crCount').textContent = d.credits + ' / ' + d.max_credits;
+    var dots = document.getElementById('crDots');
+    dots.innerHTML = '';
+    for (var i = 0; i < d.max_credits; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'cr-dot ' + (i < d.credits ? 'active' : 'empty');
+      dots.appendChild(dot);
+    }
+    document.getElementById('crNext').textContent = d.credits > 0 ? '+1 cada ' + d.regen_hours + 'h' : 'Proximo en: ' + d.next_credit;
+  }).catch(function() {});
+}
+
+document.getElementById('btnCreate').addEventListener('click', function() {
+  var user = document.getElementById('inputUser').value.trim();
+  var pass = document.getElementById('inputPass').value.trim();
+  var err = document.getElementById('errorBox');
+  var btn = document.getElementById('btnCreate');
+  var loading = document.getElementById('loadingBox');
+  err.classList.remove('show');
+  if (!selectedVps) { err.textContent = 'Selecciona un servidor'; err.classList.add('show'); return; }
+  if (!user || user.length < 3) { err.textContent = 'Usuario minimo 3 caracteres'; err.classList.add('show'); return; }
+  if (!/^[a-zA-Z0-9]+$/.test(user)) { err.textContent = 'Solo letras y numeros'; err.classList.add('show'); return; }
+  if (!pass || pass.length < 4) { err.textContent = 'Contrasena minimo 4 caracteres'; err.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Creando...'; loading.classList.add('show');
+  fetch('/api/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ vps: selectedVps, username: user, password: pass })
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    btn.disabled = false; btn.textContent = 'CREAR CUENTA'; loading.classList.remove('show');
+    if (!d.ok) { err.textContent = d.error || 'Error desconocido'; err.classList.add('show'); return; }
+    currentResult = d;
+    showResult(d);
+    loadCredits();
+  }).catch(function(e) {
+    btn.disabled = false; btn.textContent = 'CREAR CUENTA'; loading.classList.remove('show');
+    err.textContent = 'Error de conexion: ' + e.message; err.classList.add('show');
+  });
+});
+
+function showResult(d) {
+  document.getElementById('formPanel').style.display = 'none';
+  document.getElementById('resultPanel').classList.add('show');
+  document.getElementById('resFlagVps').textContent = d.vps_name.toUpperCase() + ' — ' + d.ip;
+  document.getElementById('resUser').textContent = d.username;
+  document.getElementById('resPass').textContent = d.password;
+  document.getElementById('resIp').textContent = d.ip;
+  document.getElementById('resDomain').textContent = d.domain;
+  document.getElementById('resExp').textContent = d.expiration + ' (' + d.days + ' dias)';
+  var list = document.getElementById('connList');
+  list.innerHTML = '';
+  var conns = [
+    ['UDP HTTP', d.connections.udp],
+    ['SSL/TLS', d.connections.ssl],
+    ['SSH:80', d.connections.ssh80],
+    ['DOMINIO', d.connections.domain]
+  ];
+  conns.forEach(function(c) {
+    var val = c[1];
+    var div = document.createElement('div');
+    div.className = 'conn-item';
+    var lbl = document.createElement('span'); lbl.className = 'conn-label'; lbl.textContent = c[0];
+    var v = document.createElement('span'); v.className = 'conn-value'; v.textContent = val;
+    var cbtn = document.createElement('button'); cbtn.className = 'copy-btn'; cbtn.textContent = 'Copiar';
+    cbtn.onclick = function() { copyText(val, cbtn); };
+    div.appendChild(lbl); div.appendChild(v); div.appendChild(cbtn);
+    list.appendChild(div);
+  });
+  // Puertos activos
+  if (d.ports) {
+    var pb = document.getElementById('portsBox');
+    pb.style.display = 'block';
+    var portsList = d.ports.split('  |  ');
+    pb.innerHTML = '<div style="font-family:Share Tech Mono,monospace;font-size:0.65rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Puertos Activos</div>' +
+      portsList.map(function(p){ return '<span style="display:inline-block;margin:3px 4px;padding:4px 10px;background:rgba(0,255,231,0.08);border:1px solid rgba(0,255,231,0.25);border-radius:3px;font-family:Share Tech Mono,monospace;font-size:0.72rem;color:var(--neon);">' + p.trim() + '</span>'; }).join('');
+  }
+  // Conexiones activas inteligentes
+  if (d.active_connections && d.active_connections.length > 0) {
+    list.innerHTML = '';
+    d.active_connections.forEach(function(c) {
+      var div = document.createElement('div');
+      div.className = 'conn-item';
+      var lbl = document.createElement('span'); lbl.className = 'conn-label'; lbl.textContent = c.label;
+      var v = document.createElement('span'); v.className = 'conn-value'; v.textContent = c.value;
+      var cbtn = document.createElement('button'); cbtn.className = 'copy-btn'; cbtn.textContent = 'Copiar';
+      cbtn.onclick = function() { copyText(c.value, cbtn); };
+      div.appendChild(lbl); div.appendChild(v); div.appendChild(cbtn);
+      list.appendChild(div);
+    });
+  }
+}
+
+document.getElementById('btnNew').addEventListener('click', function() {
+  document.getElementById('formPanel').style.display = 'block';
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('inputUser').value = '';
+  document.getElementById('inputPass').value = '';
+  document.getElementById('errorBox').classList.remove('show');
+  document.getElementById('portsBox').style.display = 'none';
+  document.querySelectorAll('.vps-btn').forEach(function(b) { b.classList.remove('selected'); });
+  selectedVps = null;
+  currentResult = null;
+});
+
+document.getElementById('copyAllBtn').addEventListener('click', function() {
+  if (!currentResult) return;
+  var d = currentResult;
+  var text = 'CUENTA SSH\nUsuario: ' + d.username + '\nPassword: ' + d.password + '\nIP: ' + d.ip + '\nHost: ' + d.domain + '\nExpira: ' + d.expiration + '\nUDP: ' + d.connections.udp + '\nCreado por @DarkZFull';
+  copyText(text, document.getElementById('copyAllBtn'));
+});
+
+function copyText(text, btn) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      var orig = btn.textContent; btn.textContent = 'OK'; btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  } else {
+    var ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    var orig = btn.textContent; btn.textContent = 'OK'; btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }
+}
+
+loadCredits();
+setInterval(loadCredits, 30000);
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta property="og:title" content="⚡ SSHFREE LTM — Cuentas SSH Gratis | by DarkZFull">
+<meta property="og:description" content="🌐 2 Servidores: Mexico y Miami&#10;💳 3 creditos gratis — +1 cada 10 horas&#10;🔄 Renovacion automatica&#10;🎟️ Sistema de cupones&#10;✅ Sin registro — Solo usuario y contrasena&#10;&#10;Creado por @DarkZFull • LTM Community">
+<meta property="og:image" content="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260315_115532_464.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://ltmsshfree.darkfullhn.xyz">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SSHFREE LTM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="⚡ SSHFREE LTM — Cuentas SSH Gratis">
+<meta name="twitter:description" content="2 servidores globales. 3 creditos gratis. Sin registro. Creado por @DarkZFull • LTM Community">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260315_115532_464.jpg">
+<meta name="description" content="SSHFREE LTM — Cuentas SSH gratuitas en Mexico y Miami. Sistema de creditos, cupones y VMess V2Ray. Creado por @DarkZFull.">
+<meta name="theme-color" content="#00ffe7">
+<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260315_115532_464.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSHFREE — LTM by DarkZFull</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --neon:#00ffe7;--neon2:#ff003c;--neon3:#ffe600;--neon4:#00ff88;
+  --bg:#020509;--bg2:#060d14;--bg3:#0a1520;
+  --border:rgba(0,255,231,0.12);--text:#b8ccd8;--dim:#3d5566;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;cursor:crosshair}
+
+/* SCAN LINES */
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,231,0.008) 3px,rgba(0,255,231,0.008) 4px);pointer-events:none;z-index:9998}
+
+/* GRID */
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,231,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,231,0.025) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0;animation:grid-move 20s linear infinite}
+@keyframes grid-move{0%{background-position:0 0}100%{background-position:50px 50px}}
+
+/* PARTICLES */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:1}
+.particle{position:absolute;width:2px;height:2px;background:var(--neon);border-radius:50%;animation:float-particle linear infinite;box-shadow:0 0 4px var(--neon)}
+@keyframes float-particle{0%{transform:translateY(100vh) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100px) translateX(var(--dx));opacity:0}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(2,5,9,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;letter-spacing:5px;display:flex;align-items:center;gap:8px}
+.nav-logo .ssh{color:#fff;text-shadow:0 0 30px rgba(255,255,255,0.3)}
+.nav-logo .free{color:var(--neon);text-shadow:0 0 20px var(--neon)}
+.nav-logo .ltm{color:var(--neon3);font-size:0.7rem;letter-spacing:3px;margin-left:4px;opacity:0.8}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-status{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--neon4)}
+.nav-status-dot{width:6px;height:6px;border-radius:50%;background:var(--neon4);box-shadow:0 0 8px var(--neon4);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.menu-btn{background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:6px}
+.menu-btn span{display:block;width:22px;height:2px;background:var(--neon);box-shadow:0 0 6px var(--neon);transition:all 0.3s}
+.menu-btn.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.menu-btn.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.menu-btn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+/* SIDEBAR */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:250;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px)}
+.overlay.show{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;right:-300px;width:300px;height:100vh;background:linear-gradient(180deg,#060d14,#020509);border-left:1px solid var(--border);z-index:300;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);overflow-y:auto}
+.sidebar.open{right:0}
+.sb-profile{padding:48px 24px 28px;text-align:center;position:relative;overflow:hidden}
+.sb-profile::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,255,231,0.08),transparent 70%)}
+.sb-avatar{width:88px;height:88px;border-radius:50%;border:2px solid var(--neon);box-shadow:0 0 30px rgba(0,255,231,0.3),0 0 60px rgba(0,255,231,0.1);margin:0 auto 14px;overflow:hidden;position:relative}
+.sb-avatar img{width:100%;height:100%;object-fit:cover}
+.sb-avatar::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(0,255,231,0.2);animation:rotate-ring 8s linear infinite}
+@keyframes rotate-ring{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.sb-name{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:4px}
+.sb-handle{font-family:'Share Tech Mono',monospace;font-size:0.78rem;color:var(--neon);letter-spacing:3px;margin-bottom:10px}
+.sb-role{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:2px;padding:4px 14px;border:1px solid rgba(0,255,231,0.25);color:var(--dim);text-transform:uppercase;border-radius:20px}
+.sb-divider{height:1px;margin:0 20px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.sb-links{padding:12px 0}
+.sb-link{display:flex;align-items:center;gap:14px;padding:13px 24px;color:var(--text);text-decoration:none;font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:1px;transition:all 0.2s;border-left:2px solid transparent;position:relative}
+.sb-link:hover{background:rgba(0,255,231,0.04);border-left-color:var(--neon);color:var(--neon)}
+.sb-link .ico{font-size:1.1rem;width:22px;text-align:center;flex-shrink:0}
+.sb-about{padding:20px 24px;border-top:1px solid var(--border)}
+.sb-about-title{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
+.sb-about-text{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);line-height:1.8}
+.sb-about-text strong{color:var(--neon3)}
+.sb-footer{padding:16px 24px;border-top:1px solid var(--border);text-align:center}
+.sb-footer-txt{font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:4px;color:var(--dim);text-transform:uppercase}
+.sb-footer-txt strong{color:var(--neon)}
+
+/* HERO */
+.hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;overflow:hidden}
+
+/* GLOW ORBS */
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(0,255,231,0.06),transparent);top:10%;left:50%;transform:translateX(-50%);animation:orb-float 8s ease-in-out infinite}
+.orb-2{width:300px;height:300px;background:radial-gradient(circle,rgba(255,0,60,0.04),transparent);bottom:20%;right:10%;animation:orb-float 10s ease-in-out infinite reverse}
+.orb-3{width:200px;height:200px;background:radial-gradient(circle,rgba(255,230,0,0.04),transparent);top:30%;left:5%;animation:orb-float 12s ease-in-out infinite 2s}
+@keyframes orb-float{0%,100%{transform:translateY(0) translateX(-50%)}50%{transform:translateY(-30px) translateX(-50%)}}
+
+/* HERO CONTENT */
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:6px;color:var(--neon);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:reveal 0.8s 0.3s forwards}
+.hero-title{font-family:'Orbitron',monospace;font-weight:900;line-height:0.85;margin-bottom:20px;opacity:0;animation:reveal 0.8s 0.5s forwards}
+.hero-title .line1{display:block;font-size:clamp(4rem,14vw,9rem);color:rgba(255,255,255,0.06);letter-spacing:-2px;position:relative}
+.hero-title .line1::after{content:'SSHFREE';position:absolute;left:0;right:0;color:#fff;text-shadow:0 0 60px rgba(255,255,255,0.15);animation:glitch-main 5s infinite}
+.hero-title .line2{display:block;font-size:clamp(1.5rem,5vw,3rem);color:var(--neon);text-shadow:0 0 40px var(--neon),0 0 80px rgba(0,255,231,0.2);letter-spacing:8px;margin-top:8px}
+.hero-title .line3{display:block;font-size:clamp(0.8rem,2vw,1.1rem);color:var(--neon3);letter-spacing:12px;margin-top:12px;opacity:0.8}
+
+@keyframes glitch-main{
+  0%,92%,100%{transform:none;text-shadow:0 0 60px rgba(255,255,255,0.15)}
+  93%{transform:translateX(-3px);text-shadow:-3px 0 var(--neon2),3px 0 var(--neon)}
+  94%{transform:translateX(3px);text-shadow:3px 0 var(--neon2),-3px 0 var(--neon)}
+  95%{transform:none;text-shadow:0 0 60px rgba(255,255,255,0.15)}
+}
+
+.hero-desc{font-size:1.05rem;color:var(--dim);letter-spacing:1px;margin-bottom:48px;max-width:480px;line-height:1.8;opacity:0;animation:reveal 0.8s 0.7s forwards}
+.hero-desc strong{color:var(--text)}
+
+/* CTA BUTTON */
+.cta-wrap{opacity:0;animation:reveal 0.8s 0.9s forwards;display:flex;flex-direction:column;align-items:center;gap:16px}
+.btn-cta{display:inline-flex;align-items:center;gap:14px;font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;letter-spacing:3px;padding:20px 48px;background:transparent;border:2px solid var(--neon);color:var(--neon);text-decoration:none;text-transform:uppercase;position:relative;overflow:hidden;transition:all 0.3s;clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%)}
+.btn-cta::before{content:'';position:absolute;inset:0;background:var(--neon);transform:translateX(-101%);transition:transform 0.3s ease}
+.btn-cta:hover::before{transform:translateX(0)}
+.btn-cta:hover{color:var(--bg);box-shadow:0 0 60px rgba(0,255,231,0.5)}
+.btn-cta span{position:relative;z-index:1}
+.btn-cta .arrow{font-size:1.3rem;position:relative;z-index:1;transition:transform 0.3s}
+.btn-cta:hover .arrow{transform:translateX(6px)}
+.btn-hint{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+/* STATS ROW */
+.stats-row{opacity:0;animation:reveal 0.8s 1.1s forwards;display:flex;justify-content:center;gap:0;margin-top:60px;border:1px solid var(--border);background:rgba(0,255,231,0.02)}
+.stat-item{padding:20px 32px;text-align:center;border-right:1px solid var(--border);position:relative}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px var(--neon);display:block}
+.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:4px;display:block}
+
+/* SERVERS SECTION */
+.servers-section{position:relative;z-index:2;padding:80px 24px;max-width:900px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:48px}
+.section-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:5px;color:var(--neon2);text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#fff}
+.section-title span{color:var(--neon)}
+
+.servers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:600px){.servers-grid{grid-template-columns:repeat(4,1fr)}}
+
+.server-card{background:var(--bg2);border:1px solid var(--border);padding:24px 16px;text-align:center;position:relative;overflow:hidden;transition:all 0.3s;cursor:default}
+.server-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);transform:scaleX(0);transition:transform 0.4s}
+.server-card:hover{border-color:rgba(0,255,231,0.4);background:var(--bg3);transform:translateY(-4px)}
+.server-card:hover::before{transform:scaleX(1)}
+.server-emoji{font-size:2.2rem;display:block;margin-bottom:12px}
+.server-name{font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:6px}
+.server-domain{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);margin-bottom:12px;word-break:break-all}
+.server-online{display:inline-flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--neon4)}
+.online-dot{width:5px;height:5px;border-radius:50%;background:var(--neon4);box-shadow:0 0 6px var(--neon4);animation:pulse-dot 2s ease-in-out infinite}
+
+/* FEATURES */
+.features-section{position:relative;z-index:2;padding:0 24px 80px;max-width:900px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+@media(min-width:600px){.features-grid{grid-template-columns:repeat(3,1fr)}}
+.feat-card{background:var(--bg2);padding:28px 20px;transition:background 0.3s;position:relative;overflow:hidden}
+.feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,231,0.3),transparent);transform:scaleX(0);transition:transform 0.3s}
+.feat-card:hover{background:var(--bg3)}
+.feat-card:hover::after{transform:scaleX(1)}
+.feat-icon{font-size:1.6rem;margin-bottom:12px;display:block}
+.feat-title{font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:8px}
+.feat-desc{font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:var(--dim);line-height:1.6}
+
+/* FINAL CTA */
+.final-cta{position:relative;z-index:2;padding:80px 24px;text-align:center;border-top:1px solid var(--border);background:linear-gradient(180deg,transparent,rgba(0,255,231,0.02),transparent)}
+.final-cta-title{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#fff;margin-bottom:12px}
+.final-cta-title span{color:var(--neon);text-shadow:0 0 30px var(--neon)}
+.final-cta-sub{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:40px}
+
+/* FOOTER */
+footer{position:relative;z-index:2;padding:24px;text-align:center;border-top:1px solid var(--border)}
+.footer-txt{font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:4px;color:var(--dim);text-transform:uppercase}
+.footer-txt strong{color:var(--neon3)}
+.footer-txt span{color:var(--neon)}
+
+/* ANIMATIONS */
+@keyframes reveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.7s,transform 0.7s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--neon)}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="ssh">SSH</span><span class="free">FREE</span><span class="ltm">LTM</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-status"><span class="nav-status-dot"></span>2 SERVERS ONLINE</div>
+    <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-profile">
+    <div class="sb-avatar">
+      <img src="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260314_222310_149.jpg" alt="DarkZFull">
+    </div>
+    <div class="sb-name">DarkZFull</div>
+    <div class="sb-handle">@DarkZFull</div>
+    <div class="sb-role">Desarrollador • Bot Creator</div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-links">
+    <a href="/iniciosshltm" class="sb-link"><span class="ico">🏠</span> Inicio</a>
+    <a href="/crear" class="sb-link"><span class="ico">⚡</span> Crear Cuenta SSH</a>
+    <div class="sb-divider"></div>
+    <a href="https://t.me/+AzYZK49QGys4MDVh" target="_blank" class="sb-link"><span class="ico">👥</span> Grupo de Soporte</a>
+    <a href="https://t.me/+g8bjM5B2izkyNzYx" target="_blank" class="sb-link"><span class="ico">📢</span> Canal Oficial</a>
+    <a href="https://t.me/ltmdkz" target="_blank" class="sb-link"><span class="ico">📡</span> Canal LTM</a>
+    <a href="https://t.me/DarkZFull" target="_blank" class="sb-link"><span class="ico">💬</span> Contactar Soporte</a>
+    <div class="sb-divider"></div>
+    <a href="#about" class="sb-link" onclick="showAboutSection(); closeSidebar()"><span class="ico">👤</span> Acerca del Creador</a>
+  </div>
+  <div class="sb-about">
+    <div class="sb-about-title">Acerca de SSHFREE</div>
+    <div class="sb-about-text">Servicio gratuito de cuentas SSH creado por <strong>@DarkZFull</strong>.<br><br>4 servidores globales. Sistema de créditos. Bot Telegram integrado.</div>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-footer-txt"><strong>SSHFREE</strong> LTM by DarkZFull • 2026</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-eyebrow">// Servicio de cuentas SSH gratuitas • LTM Community</div>
+  <h1 class="hero-title">
+    <span class="line1">SSHFREE</span>
+    <span class="line2">BY DARKZFULL</span>
+    <span class="line3">LTM COMMUNITY</span>
+  </h1>
+  <p class="hero-desc">Cuentas SSH automáticas en <strong>4 servidores globales</strong>.<br>Gratis. Sin registro. Válido por 3 días.</p>
+
+  <div class="cta-wrap">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <a href="/crear" class="btn-cta">
+        <span>⚡ CREAR SSH</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="/vmess" class="btn-cta" style="border-color:var(--neon3);color:var(--neon3);box-shadow:0 0 30px rgba(255,230,0,0.2);">
+        <span>📡 CREAR VMESS</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="/zivvpn" class="btn-cta" style="border-color:#a855f7;color:#a855f7;box-shadow:0 0 30px rgba(168,85,247,0.2);">
+        <span>🔐 ZIV VPN</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="btn-hint">// Sin registro — Solo usuario y contraseña</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-item"><span class="stat-num" id="c1">2</span><span class="stat-lbl">Servidores</span></div>
+    <div class="stat-item"><span class="stat-num" id="c2">3</span><span class="stat-lbl">Días gratis</span></div>
+    <div class="stat-item"><span class="stat-num" id="c3">24/7</span><span class="stat-lbl">Uptime</span></div>
+    <div class="stat-item"><span class="stat-num" id="c4">∞</span><span class="stat-lbl">Renovaciones</span></div>
+  </div>
+</div>
+
+<!-- SERVERS -->
+<div class="servers-section">
+  <div class="section-header fade-in">
+    <div class="section-tag">// Servidores disponibles</div>
+    <h2 class="section-title">2 Ubicaciones <span>Globales</span></h2>
+  </div>
+  <div class="servers-grid fade-in">
+    <div class="server-card">
+      <span class="server-emoji">🇲🇽</span>
+      <div class="server-name">MEXICO</div>
+      <div class="server-domain">mxvlt.darkfullhn.xyz</div>
+      <div class="server-online"><span class="online-dot"></span>Online</div>
+    </div>
+    <div class="server-card">
+      <img src="https://flagcdn.com/w40/us.png" style="width:36px;height:24px;object-fit:cover;border-radius:3px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
+      <div class="server-name">MIAMI</div>
+      <div class="server-domain">mia.darkfullhn.xyz</div>
+      <div class="server-online"><span class="online-dot"></span>Online</div>
+    </div>
+  </div>
+
+<!-- FEATURES -->
+<div class="features-section">
+  <div class="section-header fade-in">
+    <div class="section-tag">// Características</div>
+    <h2 class="section-title">Todo lo que <span>incluye</span></h2>
+  </div>
+  <div class="features-grid fade-in">
+    <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-title">Instantáneo</div><p class="feat-desc">Cuenta SSH creada en segundos sin esperas ni registros.</p></div>
+    <div class="feat-card"><span class="feat-icon">💳</span><div class="feat-title">Créditos</div><p class="feat-desc">3 créditos gratis. Regeneración de +1 cada 10 horas.</p></div>
+    <div class="feat-card"><span class="feat-icon">🔄</span><div class="feat-title">Renovar</div><p class="feat-desc">Renueva tu cuenta por 3 días más con solo 1 crédito.</p></div>
+    <div class="feat-card"><span class="feat-icon">🎟️</span><div class="feat-title">Cupones</div><p class="feat-desc">Canjea cupones para obtener créditos extra al instante.</p></div>
+    <div class="feat-card"><span class="feat-icon">⚠️</span><div class="feat-title">Alertas</div><p class="feat-desc">Aviso automático 12 horas antes de que expire tu cuenta.</p></div>
+    <div class="feat-card"><span class="feat-icon">🤖</span><div class="feat-title">Bot Telegram</div><p class="feat-desc">También disponible desde el bot oficial en Telegram.</p></div>
+  </div>
+</div>
+
+<!-- ABOUT SECTION -->
+<div id="about" class="final-cta fade-in">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:48px;">
+    <img src="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260314_222310_149.jpg"
+      style="width:100px;height:100px;border-radius:50%;border:3px solid var(--neon);box-shadow:0 0 30px rgba(0,255,231,0.4);margin-bottom:20px;object-fit:cover;">
+    <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:#fff;letter-spacing:3px;margin-bottom:6px;">DarkZFull</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:var(--neon);letter-spacing:4px;margin-bottom:16px;">@DarkZFull</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--dim);line-height:1.9;max-width:360px;text-align:center;">
+      Administrador de comunidades Telegram<br>
+      Desarrollador de bots y herramientas SSH<br>
+      Creador de SSHFREE, SubScanLTM y más
+    </div>
+    <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;justify-content:center;">
+      <a href="https://t.me/DarkZFull" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;padding:10px 18px;border:1px solid var(--border);color:var(--dim);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-radius:4px;" onmouseover="this.style.borderColor='var(--neon)';this.style.color='var(--neon)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">💬 Soporte</a>
+      <a href="https://t.me/+AzYZK49QGys4MDVh" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;padding:10px 18px;border:1px solid var(--border);color:var(--dim);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-radius:4px;" onmouseover="this.style.borderColor='var(--neon)';this.style.color='var(--neon)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">👥 Grupo</a>
+      <a href="https://t.me/+g8bjM5B2izkyNzYx" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;padding:10px 18px;border:1px solid var(--border);color:var(--dim);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-radius:4px;" onmouseover="this.style.borderColor='var(--neon)';this.style.color='var(--neon)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--dim)'">📢 Canal</a>
+    </div>
+  </div>
+
+  <div class="final-cta-title">Listo para <span>conectarte</span>?</div>
+  <div class="final-cta-sub">// Gratis • Instantáneo • Sin registro</div>
+  <a href="/crear" class="btn-cta" style="display:inline-flex;">
+    <span>⚡ CREAR CUENTA SSH</span>
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<footer>
+  <div class="footer-txt"><span>SSHFREE</span> LTM by <strong>DarkZFull</strong> • 2026™</div>
+</footer>
+
+<script>
+// Sidebar
+function toggleSidebar(){
+  var sb=document.getElementById('sidebar');
+  var btn=document.getElementById('menuBtn');
+  var ov=document.getElementById('overlay');
+  sb.classList.toggle('open');
+  btn.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('menuBtn').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function showAboutSection(){
+  document.getElementById('about').scrollIntoView({behavior:'smooth'});
+}
+
+// Particles
+(function(){
+  var container=document.getElementById('particles');
+  for(var i=0;i<25;i++){
+    var p=document.createElement('div');
+    p.className='particle';
+    p.style.cssText='left:'+Math.random()*100+'%;--dx:'+(Math.random()*100-50)+'px;animation-duration:'+(8+Math.random()*12)+'s;animation-delay:'+(-Math.random()*15)+'s;opacity:'+(0.3+Math.random()*0.5)+';width:'+(1+Math.random()*2)+'px;height:'+(1+Math.random()*2)+'px';
+    container.appendChild(p);
+  }
+})();
+
+// Scroll reveal
+var reveals=document.querySelectorAll('.fade-in');
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(e,i){
+    if(e.isIntersecting){
+      setTimeout(function(){ e.target.classList.add('visible'); },i*120);
+    }
+  });
+},{threshold:0.1});
+reveals.forEach(function(r){observer.observe(r);});
+
+// Counter animation
+function animateCount(el, end, duration){
+  if(isNaN(end)) return;
+  var start=0; var step=duration/end;
+  var timer=setInterval(function(){
+    start++;
+    el.textContent=start;
+    if(start>=end) clearInterval(timer);
+  },step);
+}
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    animateCount(document.getElementById('c1'),2,400);
+    animateCount(document.getElementById('c2'),3,600);
+  },1200);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mantenimiento — SSHFREE LTM</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--neon:#00ffe7;--neon2:#ff003c;--neon3:#ffe600;--bg:#050810;--bg2:#0a0f1e;--border:rgba(0,255,231,0.15);--dim:#556677}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:#c8d8e8;font-family:'Share Tech Mono',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,231,0.01) 2px,rgba(0,255,231,0.01) 4px);pointer-events:none}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,231,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,231,0.025) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;animation:grid-move 20s linear infinite}
+@keyframes grid-move{to{background-position:50px 50px}}
+.container{position:relative;z-index:1;text-align:center;padding:40px 24px;max-width:500px}
+.icon{font-size:4rem;margin-bottom:24px;animation:spin 4s linear infinite;display:block}
+@keyframes spin{0%,100%{transform:rotate(0deg)}25%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
+.title{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,5vw,2.5rem);font-weight:900;color:var(--neon3);text-shadow:0 0 30px var(--neon3);letter-spacing:4px;margin-bottom:8px}
+.subtitle{font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--neon);letter-spacing:3px;margin-bottom:32px}
+.box{background:var(--bg2);border:1px solid var(--border);padding:28px;margin-bottom:24px;position:relative;overflow:hidden}
+.box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon3),transparent)}
+.msg{font-size:0.85rem;color:#8899aa;line-height:1.9}
+.msg strong{color:#fff}
+.progress-wrap{margin:24px 0}
+.progress-label{font-size:0.65rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;text-align:left}
+.progress-track{height:4px;background:rgba(255,255,255,0.05);position:relative;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--neon3),var(--neon));box-shadow:0 0 10px var(--neon3);animation:progress-anim 3s ease-in-out infinite}
+@keyframes progress-anim{0%{width:20%;margin-left:0}50%{width:40%;margin-left:30%}100%{width:20%;margin-left:80%}}
+.status-list{list-style:none;text-align:left;margin-top:16px}
+.status-list li{padding:8px 0;border-bottom:1px solid rgba(0,255,231,0.06);font-size:0.78rem;display:flex;align-items:center;gap:10px}
+.status-list li:last-child{border-bottom:none}
+.dot-ok{width:8px;height:8px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;flex-shrink:0}
+.dot-warn{width:8px;height:8px;border-radius:50%;background:var(--neon3);box-shadow:0 0 8px var(--neon3);flex-shrink:0;animation:blink 1s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.link-btn{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:2px;padding:10px 18px;border:1px solid var(--border);color:var(--dim);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-radius:3px}
+.link-btn:hover{border-color:var(--neon);color:var(--neon)}
+.footer{font-size:0.6rem;letter-spacing:3px;color:var(--dim);margin-top:24px;text-transform:uppercase}
+.footer strong{color:var(--neon3)}
+.timer{font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px var(--neon);margin:16px 0}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+  <span class="icon">⚙️</span>
+  <div class="title">MANTENIMIENTO</div>
+  <div class="subtitle">// Sistema en actualización</div>
+
+  <div class="box">
+    <div class="msg">
+      Estamos realizando mejoras en el servidor.<br><br>
+      <strong>El servicio estará disponible pronto.</strong><br><br>
+      Disculpa las molestias.
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">Progreso del mantenimiento</div>
+      <div class="progress-track"><div class="progress-bar"></div></div>
+    </div>
+    <ul class="status-list">
+      <li><span class="dot-warn"></span>Servidor en mantenimiento</li>
+      <li><span class="dot-ok"></span>Web SSHFREE activa</li>
+      <li><span class="dot-ok"></span>Otros servidores operativos</li>
+    </ul>
+  </div>
+
+  <div class="links">
+    <a href="https://t.me/+AzYZK49QGys4MDVh" target="_blank" class="link-btn">👥 Grupo Soporte</a>
+    <a href="https://t.me/+g8bjM5B2izkyNzYx" target="_blank" class="link-btn">📢 Canal Oficial</a>
+    <a href="https://t.me/DarkZFull" target="_blank" class="link-btn">💬 Contactar</a>
+  </div>
+
+  <div class="footer">SSHFREE LTM by <strong>DarkZFull</strong> • 2026™</div>
+</div>
+</body>
+</html>

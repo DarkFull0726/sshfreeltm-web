@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZIV VPN — SSHFREE LTM</title>
+<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DarkFull0726/Assets/refs/heads/main/IMG_20260315_115532_464.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--neon:#00ffe7;--neon2:#ff003c;--purple:#c084fc;--bg:#050810;--bg2:#0a0f1e;--bg3:#0f1628;--border:rgba(168,85,247,0.2);--text:#e2e8f0;--dim:#94a3b8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(168,85,247,0.01) 2px,rgba(168,85,247,0.01) 4px);pointer-events:none;z-index:9999}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(168,85,247,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(5,8,16,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--neon);letter-spacing:4px}
+.nav-logo span{color:var(--neon2)}
+.nav-back{font-family:'Share Tech Mono',monospace;font-size:0.68rem;padding:8px 16px;background:transparent;border:1px solid var(--border);color:var(--purple);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-radius:4px}
+.main{position:relative;z-index:1;padding:80px 20px 40px;max-width:500px;margin:0 auto}
+.page-title{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--purple);text-shadow:0 0 25px rgba(192,132,252,0.5);letter-spacing:4px;margin-bottom:4px;text-align:center}
+.page-subtitle{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:28px;text-align:center}
+.credits-bar{background:var(--bg3);border:1px solid var(--border);padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:14px;border-radius:6px}
+.cr-dots{display:flex;gap:6px}
+.cr-dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--purple);transition:all 0.3s}
+.cr-dot.active{background:var(--purple);box-shadow:0 0 10px var(--purple)}
+.cr-dot.empty{border-color:var(--dim)}
+.cr-info{flex:1}
+.cr-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.cr-count{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;color:var(--purple)}
+.cr-next{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);margin-top:1px}
+.server-banner{background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.04));border:1px solid var(--border);padding:18px 20px;border-radius:8px;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+.server-flag{font-size:2.2rem;flex-shrink:0}
+.server-info-text .name{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:#fff;letter-spacing:2px}
+.server-info-text .loc{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);margin-top:3px}
+.online{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#00ff88}
+.online-dot{width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;animation:blink 2s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.section-label{font-family:'Orbitron',monospace;font-size:0.7rem;font-weight:900;letter-spacing:4px;color:var(--purple);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.form-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.form-header{background:rgba(168,85,247,0.08);padding:10px 16px;border-bottom:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--purple);text-transform:uppercase}
+.form-body{padding:16px}
+.field-prefix{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color 0.2s;margin-bottom:12px}
+.field-prefix:focus-within{border-color:var(--purple)}
+.prefix-text{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--purple);padding:13px 10px;border-right:1px solid var(--border);white-space:nowrap;background:rgba(168,85,247,0.05)}
+.field-prefix input{border:none;background:transparent;flex:1;padding:13px 10px;font-family:'Share Tech Mono',monospace;font-size:0.9rem;color:#fff;outline:none}
+.field-prefix input::placeholder{color:var(--dim)}
+.error-box{display:none;background:rgba(255,0,60,0.08);border:1px solid rgba(255,0,60,0.3);padding:12px;margin-bottom:12px;font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:#ff6680;border-radius:6px}
+.error-box.show{display:block}
+.loading-box{display:none;text-align:center;padding:12px;font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:var(--purple)}
+.loading-box.show{display:block}
+.btn-create{width:100%;padding:15px;background:var(--purple);color:#fff;border:none;font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;box-shadow:0 0 20px rgba(168,85,247,0.3);border-radius:6px}
+.btn-create:hover{box-shadow:0 0 40px rgba(168,85,247,0.6)}
+.btn-create:disabled{background:var(--dim);cursor:not-allowed;box-shadow:none}
+.result-panel{display:none}
+.result-panel.show{display:block}
+.result-header{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);padding:16px;text-align:center;margin-bottom:14px;border-radius:8px}
+.result-ok{font-family:'Orbitron',monospace;font-size:0.82rem;font-weight:900;color:#00ff88;letter-spacing:2px}
+.result-sub{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);margin-top:4px}
+.cred-box{background:var(--bg2);border:1px solid var(--border);margin-bottom:12px;border-radius:8px;overflow:hidden}
+.cred-header{background:rgba(168,85,247,0.08);padding:10px 16px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--purple);text-transform:uppercase;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.copy-btn{background:transparent;border:1px solid rgba(192,132,252,0.4);color:var(--purple);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.65rem;padding:5px 12px;transition:all 0.2s;border-radius:3px}
+.copy-btn.copied{color:#00ff88;border-color:#00ff88}
+.cred-row{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid rgba(168,85,247,0.08);gap:12px}
+.cred-row:last-child{border-bottom:none}
+.cred-key{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--dim);min-width:80px;text-transform:uppercase}
+.cred-val{font-family:'Share Tech Mono',monospace;font-size:0.85rem;color:#fff;word-break:break-all;text-align:right}
+.cred-val.accent{color:var(--purple)}
+.cred-val.uri{color:#00ffe7;font-size:0.72rem}
+.uri-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.uri-header{background:rgba(168,85,247,0.08);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.uri-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--purple);text-transform:uppercase}
+.uri-content{padding:14px 16px}
+.uri-text{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:#00ffe7;word-break:break-all;line-height:1.6;margin-bottom:10px}
+.uri-badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-family:'Share Tech Mono',monospace;font-size:0.62rem;padding:4px 10px;border-radius:3px;letter-spacing:1px}
+.badge-app{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:var(--purple)}
+.badge-ver{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:#00ff88}
+.btn-new{width:100%;padding:13px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Orbitron',monospace;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border-radius:6px;margin-top:6px}
+.btn-new:hover{border-color:var(--purple);color:var(--purple)}
+.creator-badge{text-align:center;border-top:1px solid rgba(168,85,247,0.15);padding-top:18px;margin-top:8px}
+.creator-badge-text{font-family:'Orbitron',monospace;font-size:0.58rem;font-weight:900;letter-spacing:4px;color:var(--dim);text-transform:uppercase}
+.creator-badge-text span{color:var(--neon)}
+.creator-badge-text strong{color:var(--purple)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--purple)}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <div class="nav-logo">SSH<span>FREE</span></div>
+  <a href="/" class="nav-back">← Inicio</a>
+</nav>
+<div class="main">
+  <div class="page-title">ZIV VPN</div>
+  <div class="page-subtitle">// Crea tu cuenta • 3 dias • Richmond USA</div>
+
+  <div class="credits-bar">
+    <div class="cr-dots" id="crDots">
+      <div class="cr-dot active"></div>
+      <div class="cr-dot active"></div>
+      <div class="cr-dot active"></div>
+    </div>
+    <div class="cr-info">
+      <div class="cr-label">Creditos disponibles</div>
+      <div class="cr-count" id="crCount">3 / 3</div>
+      <div class="cr-next" id="crNext">+1 cada 10h</div>
+    </div>
+  </div>
+
+  <div class="server-banner">
+    <span class="server-flag">🇺🇸</span>
+    <div class="server-info-text">
+      <div class="name">RICHMOND USA</div>
+      <div class="loc">Richmond, Virginia • United States</div>
+    </div>
+    <div class="online"><span class="online-dot"></span>Online</div>
+  </div>
+
+  <!-- FORMULARIO -->
+  <div id="formPanel">
+    <div class="section-label">Crear Cuenta</div>
+    <div class="form-box">
+      <div class="form-header">Nueva cuenta ZIV VPN • 3 dias</div>
+      <div class="form-body">
+        <div class="field-prefix">
+          <span class="prefix-text">ltmfreessh-</span>
+          <input type="text" id="inputSuffix" placeholder="tunombre" maxlength="20">
+        </div>
+        <div class="error-box" id="errorBox"></div>
+        <div class="loading-box" id="loadingBox">Creando cuenta, espera...</div>
+        <button class="btn-create" id="btnCreate">CREAR CUENTA</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="result-panel" id="resultPanel">
+    <div class="result-header">
+      <div class="result-ok">CUENTA CREADA</div>
+      <div class="result-sub">Richmond USA • Puerto 5667 • ZIV VPN</div>
+    </div>
+    <div class="cred-box">
+      <div class="cred-header">Credenciales ZIV VPN <button class="copy-btn" id="copyAllBtn">Copiar todo</button></div>
+      <div class="cred-row"><span class="cred-key">IP</span><span class="cred-val" id="resIp"></span></div>
+      <div class="cred-row"><span class="cred-key">Puerto</span><span class="cred-val">5667</span></div>
+      <div class="cred-row"><span class="cred-key">Password</span><span class="cred-val accent" id="resPass"></span></div>
+      <div class="cred-row"><span class="cred-key">Expira</span><span class="cred-val" id="resExp"></span></div>
+    </div>
+    <div class="uri-box">
+      <div class="uri-header">
+        <span class="uri-label">URI RequestLab X</span>
+        <button class="copy-btn" id="copyUriBtn">Copiar</button>
+      </div>
+      <div class="uri-content">
+        <div class="uri-text" id="resUri"></div>
+        <div class="uri-badges">
+          <span class="badge badge-app">RequestLab X</span>
+          <span class="badge badge-ver">Version minima: 1.0.14</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn-new" id="btnNew">Crear otra cuenta</button>
+  </div>
+
+  <div class="creator-badge">
+    <div class="creator-badge-text"><span>SSHFREE</span> by <strong>DarkZFull</strong> 2026</div>
+  </div>
+</div>
+
+<script>
+var currentResult = null;
+
+function loadCredits() {
+  fetch('/api/status').then(function(r){ return r.json(); }).then(function(d){
+    document.getElementById('crCount').textContent = d.credits + ' / ' + d.max_credits;
+    var dots = document.getElementById('crDots');
+    dots.innerHTML = '';
+    for (var i = 0; i < d.max_credits; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'cr-dot ' + (i < d.credits ? 'active' : 'empty');
+      dots.appendChild(dot);
+    }
+    document.getElementById('crNext').textContent = d.credits > 0 ? '+1 cada ' + d.regen_hours + 'h' : 'Proximo en: ' + d.next_credit;
+  }).catch(function(){});
+}
+
+document.getElementById('btnCreate').addEventListener('click', function() {
+  var suffix = document.getElementById('inputSuffix').value.trim();
+  var err = document.getElementById('errorBox');
+  var btn = document.getElementById('btnCreate');
+  var loading = document.getElementById('loadingBox');
+  err.classList.remove('show');
+  if (!suffix || suffix.length < 3) { err.textContent = 'Minimo 3 caracteres'; err.classList.add('show'); return; }
+  if (!/^[a-zA-Z0-9]+$/.test(suffix)) { err.textContent = 'Solo letras y numeros'; err.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Creando...'; loading.classList.add('show');
+  fetch('/api/zivpn/create', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({suffix: suffix})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    btn.disabled = false; btn.textContent = 'CREAR CUENTA'; loading.classList.remove('show');
+    if (!d.ok) { err.textContent = d.error || 'Error desconocido'; err.classList.add('show'); return; }
+    currentResult = d;
+    showResult(d);
+    loadCredits();
+  }).catch(function(e){
+    btn.disabled = false; btn.textContent = 'CREAR CUENTA'; loading.classList.remove('show');
+    err.textContent = 'Error de conexion'; err.classList.add('show');
+  });
+});
+
+function showResult(d) {
+  document.getElementById('formPanel').style.display = 'none';
+  document.getElementById('resultPanel').classList.add('show');
+  document.getElementById('resIp').textContent = d.ip;
+  document.getElementById('resPass').textContent = d.password;
+  document.getElementById('resExp').textContent = d.expiration + ' (' + d.days + ' dias)';
+  var uri = 'udp-zivpn-labx://' + d.ip + ':6000-9500?password=' + d.password;
+  document.getElementById('resUri').textContent = uri;
+  document.getElementById('copyUriBtn').onclick = function() { copyText(uri, this); };
+  document.getElementById('copyAllBtn').onclick = function() {
+    var text = 'ZIV VPN\nIP: ' + d.ip + '\nPuerto: 5667\nPassword: ' + d.password + '\nExpira: ' + d.expiration + '\nURI: ' + uri;
+    copyText(text, this);
+  };
+}
+
+document.getElementById('btnNew').addEventListener('click', function() {
+  document.getElementById('formPanel').style.display = 'block';
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('inputSuffix').value = '';
+  document.getElementById('errorBox').classList.remove('show');
+  currentResult = null;
+});
+
+function copyText(text, btn) {
+  var orig = btn.textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'OK'; btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  } else {
+    var ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = 'OK'; btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }
+}
+
+loadCredits();
+setInterval(loadCredits, 30000);
+</script>
+</body>
+</html>
